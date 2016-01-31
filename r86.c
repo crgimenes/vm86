@@ -10,8 +10,8 @@ void run(const char *s) {
 	unsigned char v;
 	unsigned char par_count; 
 
-	char ah;
-	char al;
+	unsigned char ah;
+	unsigned char al;
 	int16_t cx;
     int16_t bx;
     int16_t dx;
@@ -44,7 +44,7 @@ void run(const char *s) {
                     lbyte = (unsigned char)(*(s+c));
 					c++;
                     hbyte = (unsigned char)(*(s+c));
-					cx = hbyte << 8 | lbyte;;
+					cx = (int16_t)(hbyte << 8 | lbyte);
                     if(print_asm==1) printf("mov cx, %4Xh",cx);
                     break;
                 case 0xBA:
@@ -52,7 +52,7 @@ void run(const char *s) {
                     lbyte = (unsigned char)(*(s+c));
                     c++;
                     hbyte = (unsigned char)(*(s+c));
-                    dx = hbyte << 8 | lbyte;;
+                    dx = (int16_t)(hbyte << 8 | lbyte);
                     if(print_asm==1) printf("mov dx, %4Xh",dx);
                     break;
 				case 0xBB:
@@ -60,7 +60,7 @@ void run(const char *s) {
                     lbyte = (unsigned char)(*(s+c));
                     c++;
                     hbyte = (unsigned char)(*(s+c));
-                    bx = hbyte << 8 | lbyte;;
+                    bx = (int16_t)(hbyte << 8 | lbyte);
                     if(print_asm==1) printf("mov bx, %4Xh",bx);
                     break;
                 case 0xCC:
@@ -103,9 +103,9 @@ void run(const char *s) {
 	}
 }
 
-unsigned int fsize(FILE *fd) {
+size_t fsize(FILE *fd) {
 	fseek(fd, 0, SEEK_END);
-	unsigned int size = ftell(fd);
+	size_t size = (size_t)ftell(fd); // warning ftell return signed long
 	fseek(fd, 0, SEEK_SET);
 	return size;
 }
@@ -118,8 +118,9 @@ int main(int argc, char *argv[]) {
     char *filename;
     extern char *optarg;
     extern int optind, optopt, opterr;
-
-    print_asm = 0;
+	char *file;
+    
+	print_asm = 0;
 
     while ((a = getopt(argc, argv, "a")) != -1) {
         switch(a) {
@@ -143,7 +144,6 @@ int main(int argc, char *argv[]) {
         }
     }
 
-    char *file;
         //printf("optind = %i\n",optind);
     if (optind < argc) {
             file = argv[optind];
@@ -162,7 +162,7 @@ int main(int argc, char *argv[]) {
 		return(-1);
 	}
 	
-	unsigned int size = fsize(fp);
+	size_t size = fsize(fp);
 
 	fread(memory, size, 1, fp);
 	fclose(fp);
