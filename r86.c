@@ -8,7 +8,7 @@ int print_asm;
 
 void run(const char *s) {
 	unsigned char v;
-	unsigned char par_count; 
+	unsigned char par_count=0; 
 
 	unsigned char ah;
 	unsigned char al;
