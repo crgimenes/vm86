@@ -1,14 +1,14 @@
 # r86
-Emulate old DOS .com files in the terminal. It is a simple proof of concept, not a complete emulator.
+Emulate old DOS .com files in the console. It is a simple proof of concept, not a complete emulator.
 
 
 ```
 make
-nasm -f bin teste.asm -o teste.com
+nasm -f bin test.asm -o test.com
 ```
 
 ```
-$./r86 teste.com                   
+$./r86 test.com                   
 hello world
 $echo $?        
 1
