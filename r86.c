@@ -1,3 +1,4 @@
+#include <curses.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -5,6 +6,39 @@
 
 
 int print_asm;
+int use_curses;
+int cursor_x;
+int cursor_y;
+WINDOW *mainwin;
+
+void setCursorPos(int x, int y) {
+    cursor_x = x;
+    cursor_y = y;
+    wmove(mainwin, y, x);
+    refresh();
+}
+
+void setChar(const unsigned char c) {
+    mvwaddch(mainwin, cursor_y, cursor_x, c);
+    refresh();
+}
+
+void init_ncurses(void) {
+    if (!use_curses) return;
+
+	if ( (mainwin = initscr()) == NULL ) {
+		printf("Error initialising ncurses.\n");
+		exit(1);
+    }
+}
+
+void end_ncurses(void) {
+    if (!use_curses) return;
+
+	delwin(mainwin);
+	endwin();
+    refresh();
+}
 
 void run(const char *s) {
 	unsigned char v;
@@ -85,7 +119,13 @@ void run(const char *s) {
 							
 							for(int i=0;i<cx;i++) {
 								v = (unsigned char)(*(s+(dx-0x100)+i));
-								printf("%c",v);
+                                if (use_curses) {
+                                    setChar(v);
+                                    cursor_x++;
+                                } else {
+                                    printf("%c",v);
+                                }
+
 							}
 						}
 					}
@@ -114,18 +154,24 @@ int main(int argc, char *argv[]) {
     char memory[1024];
 	FILE *fp;
 
-    int a;
+    int opt_flag;
     char *filename;
     extern char *optarg;
     extern int optind, optopt, opterr;
 	char *file;
     
-	print_asm = 0;
+    print_asm = 0;
+    use_curses = 0;
+    cursor_y = 0;
+    cursor_y = 0;
 
-    while ((a = getopt(argc, argv, "a")) != -1) {
-        switch(a) {
+    while ((opt_flag = getopt(argc, argv, "acf")) != -1) {
+        switch(opt_flag) {
             case 'a':
                 print_asm = 1;
+                break;
+            case 'c':
+                use_curses = 1;
                 break;
             case 'f':
                 filename = optarg;
@@ -135,7 +181,7 @@ int main(int argc, char *argv[]) {
                 printf("-%c without filename\n", optopt);
                 break;
             case '?':
-                printf("unknown arg %c\n", optopt);
+                printf("unknown option %c\n", optopt);
                 break;
             default:
                 filename = optarg;
@@ -167,7 +213,9 @@ int main(int argc, char *argv[]) {
 	fread(memory, size, 1, fp);
 	fclose(fp);
 	
+	init_ncurses();
 	run(memory);
+	end_ncurses();
 
 	return 0;
 }

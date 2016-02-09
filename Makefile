@@ -14,7 +14,7 @@ endif
 LIB_OBJ := r86.c
 
 all: $(LIB_OBJ)
-	$(CP) $(CFLAGS) $(LIB_OBJ) -o r86
+	$(CP) $(CFLAGS) $(LIB_OBJ) -lncurses -o r86
 
 debug:
 	@[ ! -f .debug ] && ($(MAKE) clean ; touch .debug) || true
