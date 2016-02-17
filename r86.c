@@ -105,6 +105,9 @@ void run(const char *s) {
 					c++;
                     v = (unsigned char)(*(s+c));
                     if(print_asm==1) printf("int %2Xh",v);
+					if(v==0x20) { // return to "DOS" :D
+						exit(0);
+					}
 					if(v==0x21) { // DOS
 						if(ah == 0x4C) { // exit program
 							printf("\r\n");
