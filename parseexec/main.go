@@ -122,6 +122,7 @@ func main() {
 		fmt.Printf("%02X ", v)
 	}
 	fmt.Println("\n-------------")
+
 	buffer := bytes.NewBuffer(data)
 	err = binary.Read(buffer, binary.LittleEndian, &header)
 	if err != nil {
@@ -129,5 +130,11 @@ func main() {
 	}
 
 	fmt.Printf("Parsed data:\n%+v\n", header)
+
+	fmt.Printf("Magic %X\n", header.Magic)
+
+	if header.Magic == 0xFEEDFACF || header.Magic == 0xcdfaedfe {
+		fmt.Println("Mach-O")
+	}
 
 }
