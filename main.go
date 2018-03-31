@@ -6,7 +6,7 @@ import (
 	"io"
 	"os"
 
-	"github.com/crgimenes/goConfig"
+	"github.com/crgimenes/goconfig"
 )
 
 type config struct {
@@ -18,8 +18,8 @@ var memory [640000]byte
 func main() {
 	cfg := config{}
 
-	goConfig.PrefixEnv = "R86"
-	err := goConfig.Parse(&cfg)
+	goconfig.PrefixEnv = "R86"
+	err := goconfig.Parse(&cfg)
 	if err != nil {
 		println(err.Error())
 		os.Exit(1)
