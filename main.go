@@ -15,6 +15,13 @@ type config struct {
 
 var memory [640000]byte
 
+func closer(f io.Closer) {
+	err := f.Close()
+	if err != nil {
+		println(err.Error())
+	}
+}
+
 func main() {
 	cfg := config{}
 
@@ -37,13 +44,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	defer func() {
-		err = f.Close()
-		if err != nil {
-			println(err.Error())
-			os.Exit(1)
-		}
-	}()
+	defer closer(f)
 
 	buff := bufio.NewReader(f)
 
