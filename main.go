@@ -6,7 +6,7 @@ import (
 	"io"
 	"os"
 
-	"github.com/gosidekick/goconfig"
+	"crg.eti.br/go/config"
 )
 
 type config struct {
