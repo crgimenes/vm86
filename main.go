@@ -9,7 +9,7 @@ import (
 	"crg.eti.br/go/config"
 )
 
-type config struct {
+type Config struct {
 	FileName string `cfg:"name"`
 }
 
@@ -23,10 +23,10 @@ func closer(f io.Closer) {
 }
 
 func main() {
-	cfg := config{}
+	cfg := Config{}
 
-	goconfig.PrefixEnv = "R86"
-	err := goconfig.Parse(&cfg)
+	config.PrefixEnv = "R86"
+	err := config.Parse(&cfg)
 	if err != nil {
 		println(err.Error())
 		os.Exit(1)
