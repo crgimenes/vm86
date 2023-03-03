@@ -32,3 +32,4 @@
 *.dSYM/
 
 *.com
+.DS_Store
