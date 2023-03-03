@@ -25,7 +25,7 @@ func closer(f io.Closer) {
 func main() {
 	cfg := Config{}
 
-	config.PrefixEnv = "R86"
+	config.PrefixEnv = "VM86"
 	err := config.Parse(&cfg)
 	if err != nil {
 		println(err.Error())
