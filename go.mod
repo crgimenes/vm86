@@ -1,4 +1,4 @@
-module github.com/crgimenes/vm
+module crg.eti.br/go/vm86
 
 go 1.20
 
