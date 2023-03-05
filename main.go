@@ -18,7 +18,7 @@ var memory [640000]byte
 func closer(f io.Closer) {
 	err := f.Close()
 	if err != nil {
-		println(err.Error())
+		fmt.Println(err.Error())
 	}
 }
 
@@ -28,7 +28,7 @@ func main() {
 	config.PrefixEnv = "VM86"
 	err := config.Parse(&cfg)
 	if err != nil {
-		println(err.Error())
+		fmt.Println(err.Error())
 		os.Exit(1)
 	}
 
@@ -40,7 +40,7 @@ func main() {
 
 	f, err := os.Open(cfg.FileName)
 	if err != nil {
-		println(err.Error())
+		fmt.Println(err.Error())
 		os.Exit(1)
 	}
 
@@ -61,7 +61,7 @@ func main() {
 			if err == io.EOF {
 				break
 			}
-			println(err.Error())
+			fmt.Println(err.Error())
 			os.Exit(1)
 		}
 
@@ -69,7 +69,7 @@ func main() {
 
 		if col >= 16 || col == 0 {
 			col = 0
-			fmt.Printf("\n%06X ", count)
+			fmt.Println(err.Error())
 		}
 
 		fmt.Printf("%02X ", c)
@@ -77,5 +77,5 @@ func main() {
 		count++
 	}
 
-	fmt.Printf("\n\n%v bytes loaded\n", count)
+	fmt.Println(err.Error())
 }
